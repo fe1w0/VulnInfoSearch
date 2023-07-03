@@ -1,0 +1,16 @@
+- cwe_id: CWE-190
+  url: https://cwe.mitre.org/data/definitions/190.html
+- cwe_id : CWE-191
+  url: https://cwe.mitre.org/data/definitions/191.html
+- cwe_id : CWE-369
+  url: https://cwe.mitre.org/data/definitions/369.html
+- cwe_id : CWE-400
+  url: https://cwe.mitre.org/data/definitions/400.html
+- cwe_id : CWE-404
+  url: https://cwe.mitre.org/data/definitions/404.html
+- cwe_id : CWE-78
+  url: https://cwe.mitre.org/data/definitions/78.html
+- cwe_id : CWE-476
+  url: https://cwe.mitre.org/data/definitions/476.html
+- cwe_id : CWE-23
+  url: https://cwe.mitre.org/data/definitions/23.html
