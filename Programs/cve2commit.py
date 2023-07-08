@@ -29,6 +29,9 @@ def check_github_commit_url(url):
     else:
         return False
     
+def sanitize_url(url):
+    return url.replace(",", "")
+
 def get_commits_from_cve(cve):
     github_commit_links = []
     if cve != "":
@@ -42,7 +45,7 @@ def get_commits_from_cve(cve):
                 links = tree.xpath("//td[starts-with(@data-testid,'vuln-hyperlinks-link-')]/a")
                 # 检查 是否为 github_commit
                 for link in links:
-                    tmp_link = link.get("href")
+                    tmp_link = sanitize_url(link.get("href"))
                     if(check_github_commit_url(tmp_link)):
                         github_commit_links.append(tmp_link)
             print("[+] Success: " + request_url)

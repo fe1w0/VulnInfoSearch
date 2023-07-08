@@ -3,9 +3,9 @@ import requests
 import re
 import time
 import yaml
-from concurrent.futures import ThreadPoolExecutor
 import concurrent
 from bs4 import BeautifulSoup
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 
 
@@ -22,9 +22,8 @@ def get_cwe2commits():
     return cwe2cve_info
 
 def save_output(result):
-    with open('Output/cve2commit_sanitize_new.yml', 'w') as f:
+    with open('Output/cve2commit_sanitize.yml', 'w') as f:
         yaml.dump(result, f, indent=4, sort_keys=False)
-
 
 def timer(func):
     def wrapper(*args, **kwargs):
@@ -52,7 +51,11 @@ def get_files_name_and_Lang_from_commit(commit_url):
             headers = {
                 "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.67"
             }
-            html_text = requests.get(commit_url, headers=headers, proxies=LOCAL_PROXIES).text
+            
+            response = requests.get(commit_url, headers=headers, proxies=LOCAL_PROXIES)
+            response.raise_for_status()
+            html_text = response.text
+            
             soup = BeautifulSoup(html_text, 'html.parser')
             div_tags = soup.find_all('div')
             
@@ -73,15 +76,12 @@ def get_files_name_and_Lang_from_commit(commit_url):
                 
                 if data_tagsearch_path and data_tagsearch_lang:
                     get_files_name_and_Lang[data_tagsearch_path] = {"path": data_tagsearch_path, "lang": data_tagsearch_lang}
-            
-            # print("[+] Success: " + commit_url)
+            print("[+] Success: " + commit_url)
         except Exception as e:
             print(f"[!] Error: {commit_url} 查询失败：{e}, 重新尝试")
             # get_files_name_and_Lang_from_commit(commit_url)
     return get_files_name_and_Lang
 
-
-from concurrent.futures import ThreadPoolExecutor, as_completed
 
 def get_type_from_whole_result(sanitize_result):
     global MAX_WORKERS
@@ -105,8 +105,10 @@ def get_type_from_whole_result(sanitize_result):
                 # 处理完成的任务
                 for future in as_completed(futures):
                     commit_result = future.result()
-                    commit_url = commit_result["commit_url"]
-                    tmp_result_from_commit[commit_url] = commit_result
+                    
+                    if "commit_hashCode" in commit_result:
+                        commit_url = commit_result["commit_url"]
+                        tmp_result_from_commit[commit_url] = commit_result
                     
                 tmp_result_from_cve[cve] = tmp_result_from_commit
 
@@ -136,6 +138,5 @@ def main():
     # 统计数据
     print("[+] Length " + str(total_number))
    
-    
 if __name__ == "__main__":
     main()

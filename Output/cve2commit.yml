@@ -6093,7 +6093,7 @@ CWE-78:
     CVE-2020-5524: []
     CVE-2014-2727: []
     CVE-2019-10791:
-    - https://github.com/dottgonzo/node-promise-probe/commit/0d9affb67fc1ad985903536d35372cf55efe5a45,
+    - https://github.com/dottgonzo/node-promise-probe/commit/0d9affb67fc1ad985903536d35372cf55efe5a45
     CVE-2020-9027: []
     CVE-2014-4981: []
     CVE-2020-7597:
