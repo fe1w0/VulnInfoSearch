@@ -1,0 +1,33 @@
+# Wagtail 4.1.4 release notes
+
+_Unreleased_
+
+```{contents}
+---
+local:
+depth: 1
+---
+```
+
+## What's new
+
+### CVE-2023-28836: Stored XSS attack via ModelAdmin views
+
+This release addresses a stored cross-site scripting (XSS) vulnerability on ModelAdmin views within the Wagtail admin interface. A user with a limited-permission editor account for the Wagtail admin could potentially craft pages and documents that, when viewed by a user with higher privileges, could perform actions with that user's credentials. The vulnerability is not exploitable by an ordinary site visitor without access to the Wagtail admin, and only affects sites with ModelAdmin enabled.
+
+Many thanks to Thibaud Colas for reporting this issue. For further details, please see [the CVE-2023-28836 security advisory](https://github.com/wagtail/wagtail/security/advisories/GHSA-5286-f2rf-35c2).
+
+### Bug fixes
+
+* Fix radio and checkbox elements shrinking when using a long label (Sage Abdullah)
+* Fix select elements expanding beyond their container when using a long option label (Sage Abdullah)
+* Fix timezone handling of `TemplateResponse`s for users with a custom timezone (Stefan Hammer, Sage Abdullah)
+* Ensure TableBlock initialisation correctly runs after load and its width is aligned with the parent panel (Dan Braghis)
+* Ensure that the JavaScript media files are loaded by default in Snippet index listings for date fields (Sage Abdullah)
+* Fix server-side caching of the icons sprite (Thibaud Colas)
+* Always show Add buttons, guide lines, Move up/down, Duplicate, Delete; in StreamField and Inline Panel (Thibaud Colas)
+* Ensure datetimepicker widget overlay shows over modals & drop-downs (LB (Ben) Johnston)
+
+### Maintenance
+
+* Render large image renditions to disk (Jake Howard)

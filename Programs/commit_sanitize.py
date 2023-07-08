@@ -1,12 +1,8 @@
-from lxml import html
 import requests
-import re
 import time
 import yaml
-import concurrent
 from bs4 import BeautifulSoup
 from concurrent.futures import ThreadPoolExecutor, as_completed
-
 
 
 MAX_WORKERS = 20

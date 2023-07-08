@@ -1,0 +1,34 @@
+{
+    "name": "node-opcua-packet-assembler",
+    "version": "2.66.0",
+    "description": "pure nodejs OPCUA SDK - module -packet-assembler",
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "scripts": {
+        "build": "tsc -b",
+        "clean": "npx rimraf dist *.tsbuildinfo",
+        "test": "mocha"
+    },
+    "author": "Etienne Rossignon",
+    "license": "MIT",
+    "dependencies": {
+        "node-opcua-assert": "2.66.0"
+    },
+    "devDependencies": {
+        "should": "^13.2.3"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/node-opcua/node-opcua.git"
+    },
+    "keywords": [
+        "OPCUA",
+        "opcua",
+        "m2m",
+        "iot",
+        "opc ua",
+        "internet of things"
+    ],
+    "homepage": "http://node-opcua.github.io/",
+    "gitHead": "e4d73afdfcccb3491423149d9b9785888f4ebb3c"
+}

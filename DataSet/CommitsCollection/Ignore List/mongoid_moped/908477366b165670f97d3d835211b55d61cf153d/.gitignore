@@ -1,0 +1,6 @@
+Gemfile.lock
+doc
+.yardoc
+.rvmrc
+perf/results
+tmp/

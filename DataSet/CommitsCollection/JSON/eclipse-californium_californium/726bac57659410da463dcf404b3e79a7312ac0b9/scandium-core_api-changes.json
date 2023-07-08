@@ -1,0 +1,429 @@
+{
+	"2.1.0": {
+		"revapi": {
+			"ignore": [
+				{
+					"code": "java.field.visibilityReduced",
+					"old": "field org.eclipse.californium.scandium.dtls.Handshaker.inboundMessageBuffer",
+					"new": "field org.eclipse.californium.scandium.dtls.Handshaker.inboundMessageBuffer",
+					"justification": "APIfix - protected scope was not intended and only used for unit test. Added isInboundMessageProcessed for unit tests instead.",
+					"oldVisibility": "protected",
+					"newVisibility": "private",
+					"package": "org.eclipse.californium.scandium.dtls",
+					"classQualifiedName": "org.eclipse.californium.scandium.dtls.Handshaker",
+					"classSimpleName": "Handshaker",
+					"fieldName": "inboundMessageBuffer",
+					"oldArchive": "org.eclipse.californium:scandium:jar:2.0.0",
+					"elementKind": "field"
+				},
+				{
+					"code": "java.method.removed",
+					"old": "method boolean org.eclipse.californium.scandium.dtls.CertificateRequest::addCertificateAuthorities(java.security.cert.X509Certificate[])",
+					"justification": "not part of the public API - removed requires explicit ignore",
+					"package": "org.eclipse.californium.scandium.dtls",
+					"classQualifiedName": "org.eclipse.californium.scandium.dtls.CertificateRequest",
+					"classSimpleName": "CertificateRequest",
+					"methodName": "addCertificateAuthorities",
+					"oldArchive": "org.eclipse.californium:scandium:jar:2.0.0",
+					"elementKind": "method"
+				},
+				{
+					"code": "java.method.removed",
+					"old": "method java.util.List<java.security.cert.X509Certificate> org.eclipse.californium.scandium.dtls.CertificateRequest::removeTrustedCertificates(java.util.List<java.security.cert.X509Certificate>)",
+					"justification": "not part of the public API - removed requires explicit ignore",
+					"package": "org.eclipse.californium.scandium.dtls",
+					"classQualifiedName": "org.eclipse.californium.scandium.dtls.CertificateRequest",
+					"classSimpleName": "CertificateRequest",
+					"methodName": "removeTrustedCertificates",
+					"oldArchive": "org.eclipse.californium:scandium:jar:2.0.0",
+					"elementKind": "method"
+				},
+				{
+					"code": "java.method.finalMethodAddedToNonFinalClass",
+					"new": "method void org.eclipse.californium.scandium.dtls.Handshaker::handshakeAborted(java.lang.Throwable)",
+					"justification": "keep API consistent with other similar functions. Handshaker is not intended to be extended by custom code.",
+					"package": "org.eclipse.californium.scandium.dtls",
+					"classQualifiedName": "org.eclipse.californium.scandium.dtls.Handshaker",
+					"classSimpleName": "Handshaker",
+					"methodName": "handshakeAborted",
+					"elementKind": "method"
+				}
+			]
+		}
+	},
+	"2.3.0": {
+		"revapi": {
+			"ignore": [
+				{
+					"code": "java.method.removed",
+					"old": "method void org.eclipse.californium.scandium.dtls.ECDHClientKeyExchange::<init>(java.security.PublicKey, java.net.InetSocketAddress)",
+					"justification": "not part of the public API - removed requires explicit ignore",
+					"oldArchive": "org.eclipse.californium:scandium:jar:2.1.0"
+				},
+				{
+					"code": "java.method.removed",
+					"old": "method int org.eclipse.californium.scandium.dtls.ECDHServerKeyExchange::getCurveId()",
+					"justification": "not part of the public API - removed requires explicit ignore",
+					"oldArchive": "org.eclipse.californium:scandium:jar:2.1.0"
+				},
+				{
+					"code": "java.method.removed",
+					"old": "method int org.eclipse.californium.scandium.dtls.EcdhPskServerKeyExchange::getCurveId()",
+					"justification": "not part of the public API - removed requires explicit ignore",
+					"oldArchive": "org.eclipse.californium:scandium:jar:2.1.0"
+				},
+				{
+					"code": "java.method.removed",
+					"old": "method java.security.interfaces.ECPublicKey org.eclipse.californium.scandium.dtls.ECDHServerKeyExchange::getPublicKey()",
+					"justification": "not part of the public API - removed requires explicit ignore",
+					"oldArchive": "org.eclipse.californium:scandium:jar:2.1.0"
+				},
+				{
+					"code": "java.method.removed",
+					"old": "method java.security.interfaces.ECPublicKey org.eclipse.californium.scandium.dtls.EcdhPskServerKeyExchange::getPublicKey()",
+					"justification": "not part of the public API - removed requires explicit ignore",
+					"oldArchive": "org.eclipse.californium:scandium:jar:2.1.0"
+				},
+				{
+					"code": "java.method.removed",
+					"old": "method void org.eclipse.californium.scandium.dtls.SupportedEllipticCurvesExtension::<init>(org.eclipse.californium.scandium.dtls.cipher.ECDHECryptography.SupportedGroup[])",
+					"justification": "not part of the public API - removed requires explicit ignore",
+					"oldArchive": "org.eclipse.californium:scandium:jar:2.1.0"
+				},
+				{
+					"code": "java.method.removed",
+					"old": "method java.util.List<java.lang.Integer> org.eclipse.californium.scandium.dtls.SupportedEllipticCurvesExtension::getSupportedGroupIds()",
+					"justification": "not part of the public API - removed requires explicit ignore",
+					"oldArchive": "org.eclipse.californium:scandium:jar:2.1.0"
+				},
+				{
+					"code": "java.method.removed",
+					"old": "method void org.eclipse.californium.scandium.dtls.EcdhPskClientKeyExchange::<init>(org.eclipse.californium.scandium.dtls.PskPublicInformation, java.security.PublicKey, java.net.InetSocketAddress)",
+					"justification": "not part of the public API - removed requires explicit ignore",
+					"oldArchive": "org.eclipse.californium:scandium:jar:2.1.0"
+				},
+				{
+					"code": "java.method.removed",
+					"old": "method void org.eclipse.californium.scandium.dtls.ECDHServerKeyExchange::<init>(org.eclipse.californium.scandium.dtls.SignatureAndHashAlgorithm, org.eclipse.californium.scandium.dtls.cipher.ECDHECryptography, java.security.PrivateKey, org.eclipse.californium.scandium.dtls.Random, org.eclipse.californium.scandium.dtls.Random, int, java.net.InetSocketAddress) throws java.security.GeneralSecurityException",
+					"justification": "not part of the public API - removed requires explicit ignore",
+					"oldArchive": "org.eclipse.californium:scandium:jar:2.1.0"
+				},
+				{
+					"code": "java.method.removed",
+					"old": "method org.eclipse.californium.scandium.dtls.HandshakeMessage org.eclipse.californium.scandium.dtls.ECDHServerKeyExchange::fromReader(org.eclipse.californium.elements.util.DatagramReader, java.net.InetSocketAddress) throws org.eclipse.californium.scandium.dtls.HandshakeException",
+					"justification": "not part of the public API - removed requires explicit ignore",
+					"oldArchive": "org.eclipse.californium:scandium:jar:2.1.0"
+				},
+				{
+					"code": "java.method.removed",
+					"old": "method void org.eclipse.californium.scandium.dtls.ECDHServerKeyExchange::verifySignature(java.security.PublicKey, org.eclipse.californium.scandium.dtls.Random, org.eclipse.californium.scandium.dtls.Random) throws org.eclipse.californium.scandium.dtls.HandshakeException",
+					"justification": "not part of the public API - removed requires explicit ignore",
+					"oldArchive": "org.eclipse.californium:scandium:jar:2.1.0"
+				},
+				{
+					"code": "java.field.removed",
+					"old": "field org.eclipse.californium.scandium.dtls.Handshaker.ecdhe",
+					"justification": "not part of the public API - removed requires explicit ignore",
+					"oldArchive": "org.eclipse.californium:scandium:jar:2.1.0"
+				},
+				{
+					"code": "java.field.removed",
+					"old": "field org.eclipse.californium.scandium.dtls.Handshaker.pskStore",
+					"justification": "not part of the public API - removed requires explicit ignore",
+					"oldArchive": "org.eclipse.californium:scandium:jar:2.1.0"
+				},
+				{
+					"code": "java.method.removed",
+					"old": "method void org.eclipse.californium.scandium.dtls.Handshaker::generateKeys(javax.crypto.SecretKey)",
+					"justification": "not part of the public API - removed requires explicit ignore",
+					"oldArchive": "org.eclipse.californium:scandium:jar:2.1.0"
+				},
+				{
+					"code": "java.method.abstractMethodAdded",
+					"new": "method void org.eclipse.californium.scandium.dtls.Handshaker::processMasterSecret(javax.crypto.SecretKey) throws org.eclipse.californium.scandium.dtls.HandshakeException",
+					"justification": "not part of the public API - add requires explicit ignore",
+					"oldArchive": "org.eclipse.californium:scandium:jar:2.1.0"
+				},
+				{
+					"code": "java.field.visibilityReduced",
+					"old": "field org.eclipse.californium.scandium.dtls.Handshaker.ecdhe @ org.eclipse.californium.scandium.dtls.ServerHandshaker",
+					"new": "field org.eclipse.californium.scandium.dtls.ServerHandshaker.ecdhe",
+					"justification": "not part of the public API - change requires explicit ignore",
+					"oldArchive": "org.eclipse.californium:scandium:jar:2.1.0"
+				},
+				{
+					"code": "java.field.removedWithConstant",
+					"old": "field org.eclipse.californium.scandium.dtls.EcdhPskClientKeyExchange.LENGTH_BITS",
+					"justification": "not part of the public API - change requires explicit ignore",
+					"oldArchive": "org.eclipse.californium:scandium:jar:2.1.0"
+				},
+				{
+					"code": "java.method.removed",
+					"old": "method void org.eclipse.californium.scandium.dtls.SupportedPointFormatsExtension::addECPointFormat(org.eclipse.californium.scandium.dtls.SupportedPointFormatsExtension.ECPointFormat)",
+					"justification": "not part of the public API - removed requires explicit ignore",
+					"oldArchive": "org.eclipse.californium:scandium:jar:2.1.0"
+				},
+				{
+					"code": "java.class.removed",
+					"old": "class org.eclipse.californium.scandium.dtls.PskUtil",
+					"justification": "not part of the public API - obsolete",
+					"oldArchive": "org.eclipse.californium:scandium:jar:2.1.0"
+				}
+			]
+		}
+	},
+	"2.4.0": {
+		"revapi": {
+			"ignore": [
+				{
+					"code": "java.method.removed",
+					"old": "method org.eclipse.californium.scandium.dtls.HandshakeMessage org.eclipse.californium.scandium.dtls.GenericHandshakeMessage::getSpecificHandshakeMessage(org.eclipse.californium.scandium.dtls.HandshakeParameter) throws org.eclipse.californium.scandium.dtls.HandshakeException",
+					"justification": "not part of the public API - removed requires explicit ignore",
+					"oldArchive": "org.eclipse.californium:scandium:jar:2.3.0"
+				},
+				{
+					"code": "java.method.numberOfParametersChanged",
+					"old": "method org.eclipse.californium.scandium.dtls.HandshakeMessage org.eclipse.californium.scandium.dtls.HandshakeMessage::fromByteArray(byte[], org.eclipse.californium.scandium.dtls.HandshakeParameter, java.net.InetSocketAddress) throws org.eclipse.californium.scandium.dtls.HandshakeException",
+					"new": "method org.eclipse.californium.scandium.dtls.HandshakeMessage org.eclipse.californium.scandium.dtls.HandshakeMessage::fromByteArray(byte[], java.net.InetSocketAddress) throws org.eclipse.californium.scandium.dtls.HandshakeException",
+					"justification": "not part of the public API - requires explicit ignore",
+					"oldArchive": "org.eclipse.californium:scandium:jar:2.3.0"
+				},
+				{
+					"code": "java.method.removed",
+					"old": "method void org.eclipse.californium.scandium.dtls.DTLSFlight::addMessage(org.eclipse.californium.scandium.dtls.Record)",
+					"justification": "not part of the public API - removed requires explicit ignore",
+					"oldArchive": "org.eclipse.californium:scandium:jar:2.3.0"
+				},
+				{
+					"code": "java.method.removed",
+					"old": "method void org.eclipse.californium.scandium.dtls.DTLSFlight::setNewSequenceNumbers() throws java.security.GeneralSecurityException",
+					"justification": "not part of the public API - removed requires explicit ignore",
+					"oldArchive": "org.eclipse.californium:scandium:jar:2.3.0"
+				},
+				{
+					"code": "java.method.removed",
+					"old": "method void org.eclipse.californium.scandium.dtls.DTLSFlight::setTimeoutTask(java.util.concurrent.ScheduledFuture<?>)",
+					"justification": "not part of the public API - removed requires explicit ignore",
+					"oldArchive": "org.eclipse.californium:scandium:jar:2.3.0"
+				},
+				{
+					"code": "java.method.removed",
+					"old": "method java.net.InetSocketAddress org.eclipse.californium.scandium.dtls.DTLSFlight::getPeerAddress()",
+					"justification": "not part of the public API - removed requires explicit ignore",
+					"oldArchive": "org.eclipse.californium:scandium:jar:2.3.0"
+				},
+				{
+					"code": "java.method.removed",
+					"old": "method java.util.List<org.eclipse.californium.scandium.dtls.Record> org.eclipse.californium.scandium.dtls.DTLSFlight::getMessages()",
+					"justification": "not part of the public API - removed requires explicit ignore",
+					"oldArchive": "org.eclipse.californium:scandium:jar:2.3.0"
+				},
+				{
+					"code": "java.method.removed",
+					"old": "method void org.eclipse.californium.scandium.dtls.Record::updateSequenceNumber(long) throws java.security.GeneralSecurityException",
+					"justification": "not part of the public API - removed requires explicit ignore",
+					"oldArchive": "org.eclipse.californium:scandium:jar:2.3.0"
+				},
+				{
+					"code": "java.method.numberOfParametersChanged",
+					"old": "method void org.eclipse.californium.scandium.dtls.Handshaker::<init>(boolean, int, org.eclipse.californium.scandium.dtls.DTLSSession, org.eclipse.californium.scandium.dtls.RecordLayer, org.eclipse.californium.scandium.dtls.Connection, org.eclipse.californium.scandium.config.DtlsConnectorConfig, int)",
+					"new": "method void org.eclipse.californium.scandium.dtls.Handshaker::<init>(boolean, int, org.eclipse.californium.scandium.dtls.DTLSSession, org.eclipse.californium.scandium.dtls.RecordLayer, java.util.concurrent.ScheduledExecutorService, org.eclipse.californium.scandium.dtls.Connection, org.eclipse.californium.scandium.config.DtlsConnectorConfig)",
+					"justification": "Constructor not part of the public API",
+					"oldArchive": "org.eclipse.californium:scandium:jar:2.3.0"
+				},
+				{
+					"code": "java.method.numberOfParametersChanged",
+					"old": "method void org.eclipse.californium.scandium.dtls.ResumingServerHandshaker::<init>(int, org.eclipse.californium.scandium.dtls.DTLSSession, org.eclipse.californium.scandium.dtls.RecordLayer, org.eclipse.californium.scandium.dtls.Connection, org.eclipse.californium.scandium.config.DtlsConnectorConfig, int)",
+					"new": "method void org.eclipse.californium.scandium.dtls.ResumingServerHandshaker::<init>(int, org.eclipse.californium.scandium.dtls.DTLSSession, org.eclipse.californium.scandium.dtls.RecordLayer, java.util.concurrent.ScheduledExecutorService, org.eclipse.californium.scandium.dtls.Connection, org.eclipse.californium.scandium.config.DtlsConnectorConfig)",
+					"justification": "not part of the public API",
+					"oldArchive": "org.eclipse.californium:scandium:jar:2.3.0"
+				},
+				{
+					"code": "java.method.numberOfParametersChanged",
+					"old": "method void org.eclipse.californium.scandium.dtls.ServerHandshaker::<init>(int, org.eclipse.californium.scandium.dtls.DTLSSession, org.eclipse.californium.scandium.dtls.RecordLayer, org.eclipse.californium.scandium.dtls.Connection, org.eclipse.californium.scandium.config.DtlsConnectorConfig, int)",
+					"new": "method void org.eclipse.californium.scandium.dtls.ServerHandshaker::<init>(int, org.eclipse.californium.scandium.dtls.DTLSSession, org.eclipse.californium.scandium.dtls.RecordLayer, java.util.concurrent.ScheduledExecutorService, org.eclipse.californium.scandium.dtls.Connection, org.eclipse.californium.scandium.config.DtlsConnectorConfig)",
+					"justification": "not part of the public API - removed requires explicit ignore",
+					"oldArchive": "org.eclipse.californium:scandium:jar:2.3.0"
+				},
+				{
+					"code": "java.method.removed",
+					"old": "method void org.eclipse.californium.scandium.dtls.Handshaker::setPendingFlight(org.eclipse.californium.scandium.dtls.DTLSFlight)",
+					"justification": "not part of the public API - removed requires explicit ignore",
+					"oldArchive": "org.eclipse.californium:scandium:jar:2.3.0"
+				},
+				{
+					"code": "java.method.removed",
+					"old": "method org.eclipse.californium.scandium.dtls.HandshakeMessage org.eclipse.californium.scandium.dtls.Handshaker::handleFragmentation(org.eclipse.californium.scandium.dtls.FragmentedHandshakeMessage) throws org.eclipse.californium.scandium.dtls.HandshakeException",
+					"justification": "not part of the public API - removed requires explicit ignore",
+					"oldArchive": "org.eclipse.californium:scandium:jar:2.3.0"
+				},
+				{
+					"code": "java.method.removed",
+					"old": "method org.eclipse.californium.scandium.dtls.cipher.CipherSuite.KeyExchangeAlgorithm org.eclipse.californium.scandium.dtls.Handshaker::getKeyExchangeAlgorithm()",
+					"justification": "not part of the public API - removed requires explicit ignore",
+					"oldArchive": "org.eclipse.californium:scandium:jar:2.3.0"
+				},
+				{
+					"code": "java.method.removed",
+					"old": "method org.eclipse.californium.scandium.dtls.HandshakeMessage org.eclipse.californium.scandium.dtls.Handshaker::handleFragmentation(org.eclipse.californium.scandium.dtls.FragmentedHandshakeMessage) throws org.eclipse.californium.scandium.dtls.HandshakeException",
+					"old": "method org.eclipse.californium.scandium.dtls.cipher.CipherSuite.KeyExchangeAlgorithm org.eclipse.californium.scandium.dtls.Handshaker::getKeyExchangeAlgorithm()",
+					"justification": "not part of the public API - removed requires explicit ignore",
+					"oldArchive": "org.eclipse.californium:scandium:jar:2.3.0"
+				},
+				{
+					"code": "java.method.removed",
+					"old": "method org.eclipse.californium.scandium.dtls.DTLSSession org.eclipse.californium.scandium.dtls.DTLSFlight::getSession()",
+					"justification": "not part of the public API - removed requires explicit ignore",
+					"oldArchive": "org.eclipse.californium:scandium:jar:2.3.0"
+				},
+				{
+					"code": "java.method.removed",
+					"old": "method int org.eclipse.californium.scandium.dtls.DTLSSession::getMaxDatagramSize()",
+					"justification": "not part of the public API - removed requires explicit ignore",
+					"oldArchive": "org.eclipse.californium:scandium:jar:2.3.0"
+				},
+				{
+					"code": "java.class.removed",
+					"old": "class org.eclipse.californium.scandium.dtls.DebugConnectionStore",
+					"justification": "not part of the public API - moved to test jar",
+					"oldArchive": "org.eclipse.californium:scandium:jar:2.3.0"
+				}
+			]
+		}
+	},
+	"2.5.0": {
+		"revapi": {
+			"ignore": [
+				{
+					"code": "java.method.numberOfParametersChanged",
+					"old": "method void org.eclipse.californium.scandium.dtls.Record::<init>(org.eclipse.californium.scandium.dtls.ContentType, long, org.eclipse.californium.scandium.dtls.DTLSMessage, java.net.InetSocketAddress)",
+					"new": "method void org.eclipse.californium.scandium.dtls.Record::<init>(org.eclipse.californium.scandium.dtls.ContentType, org.eclipse.californium.scandium.dtls.ProtocolVersion, long, org.eclipse.californium.scandium.dtls.DTLSMessage, java.net.InetSocketAddress)",
+					"justification": "not part of the public API",
+					"oldArchive": "org.eclipse.californium:scandium:jar:2.4.0"
+				},
+				{
+					"code": "java.method.numberOfParametersChanged",
+					"old": "method java.util.List<org.eclipse.californium.scandium.dtls.Record> org.eclipse.californium.scandium.dtls.Record::fromReader(org.eclipse.californium.elements.util.DatagramReader, java.net.InetSocketAddress, org.eclipse.californium.scandium.dtls.ConnectionIdGenerator, long)",
+					"new": "method java.util.List<org.eclipse.californium.scandium.dtls.Record> org.eclipse.californium.scandium.dtls.Record::fromReader(org.eclipse.californium.elements.util.DatagramReader, java.net.InetSocketAddress, java.net.InetSocketAddress, org.eclipse.californium.scandium.dtls.ConnectionIdGenerator, long)",
+					"justification": "not part of the public API",
+					"oldArchive": "org.eclipse.californium:scandium:jar:2.4.0"
+				},
+				{
+					"code": "java.class.nonFinalClassInheritsFromNewClass",
+					"new": "class org.eclipse.californium.scandium.dtls.PskSecretResult",
+					"justification": "moving fields to ConnectionResult doesn't change the API"
+				},
+				{
+					"code": "java.field.typeChanged",
+					"fieldName": "certificateVerifier",
+					"justification": "not part of the public API",
+					"oldType": "org.eclipse.californium.scandium.dtls.x509.CertificateVerifier",
+					"newType": "org.eclipse.californium.scandium.dtls.x509.NewAdvancedCertificateVerifier"
+				},
+				{
+					"code": "java.field.removed",
+					"old": "field org.eclipse.californium.scandium.dtls.Handshaker.rpkStore",
+					"justification": "not part of the public API"
+				},
+				{
+					"code": "java.method.abstractMethodAdded",
+					"new": "method void org.eclipse.californium.scandium.dtls.Handshaker::processCertificateVerified() throws org.eclipse.californium.scandium.dtls.HandshakeException",
+					"justification": "not part of the public API"
+				},
+				{
+					"code": "java.field.nowFinal",
+					"new": "field org.eclipse.californium.scandium.dtls.Handshaker.privateKey",
+					"justification": "not part of the public API",
+					"newModifiers": "protected final"
+				},
+				{
+					"code": "java.field.nowFinal",
+					"new": "field org.eclipse.californium.scandium.dtls.Handshaker.publicKey",
+					"justification": "not part of the public API",
+					"newModifiers": "protected final"
+				},
+				{
+					"code": "java.field.nowFinal",
+					"new": "field org.eclipse.californium.scandium.dtls.Handshaker.certificateChain",
+					"justification": "not part of the public API",
+					"newModifiers": "protected final"
+				}
+			]
+		}
+	},
+	"3.3.0": [
+		{
+			"extension": "revapi.differences",
+			"configuration": {
+				"ignore": true,
+				"differences": [
+					{
+						"code": "java.annotation.added",
+						"old": "field org.eclipse.californium.scandium.dtls.cipher.CipherSuite.TLS_ECDHE_PSK_WITH_AES_256_GCM_SHA378",
+						"new": "field org.eclipse.californium.scandium.dtls.cipher.CipherSuite.TLS_ECDHE_PSK_WITH_AES_256_GCM_SHA378",
+						"annotation": "@org.eclipse.californium.elements.util.PublicAPITypo(fixedName = \"TLS_ECDHE_PSK_WITH_AES_256_GCM_SHA384\")",
+						"justification": "Annotation is used to announce an API change in the future."
+					},
+					{
+						"code": "java.annotation.added",
+						"old": "field org.eclipse.californium.scandium.dtls.cipher.CipherSuite.TLS_PSK_WITH_AES_256_GCM_SHA378",
+						"new": "field org.eclipse.californium.scandium.dtls.cipher.CipherSuite.TLS_PSK_WITH_AES_256_GCM_SHA378",
+						"annotation": "@org.eclipse.californium.elements.util.PublicAPITypo(fixedName = \"TLS_PSK_WITH_AES_256_GCM_SHA384\")",
+						"justification": "Annotation is used to announce an API change in the future."
+					},
+					{
+						"code": "java.class.nowFinal",
+						"old": "class org.eclipse.californium.scandium.dtls.cipher.AeadBlockCipher",
+						"new": "class org.eclipse.californium.scandium.dtls.cipher.AeadBlockCipher",
+						"justification": "class has only static methods"
+					}
+				]
+			}
+		}
+	],
+	"3.6.0": [
+		{
+			"extension": "revapi.differences",
+			"configuration": {
+				"ignore": true,
+				"differences": [
+					{
+						"code": "java.method.addedToInterface",
+						"new": "method boolean org.eclipse.californium.scandium.DatagramFilter::onReceiving(org.eclipse.californium.scandium.dtls.Record, org.eclipse.californium.scandium.dtls.Connection)",
+						"justification": "Work In Progress, 3.5,0 was an emergency release for CVE-2022-21449"
+					},
+					{
+						"code": "java.method.addedToInterface",
+						"new": "method boolean org.eclipse.californium.scandium.DatagramFilter::onMacError(org.eclipse.californium.scandium.dtls.Record, org.eclipse.californium.scandium.dtls.Connection)",
+						"justification": "Work In Progress, 3.5,0 was an emergency release for CVE-2022-21449"					
+					}
+				]
+			}
+		}
+	],
+	"3.7.0": [
+		{
+			"extension": "revapi.differences",
+			"configuration": {
+				"ignore": true,
+				"differences": [
+					{
+						"code": "java.method.removed",
+						"old": "method boolean org.eclipse.californium.scandium.DTLSConnector::executeHandshakeResult(java.util.concurrent.Executor, org.eclipse.californium.scandium.dtls.Connection, java.lang.Runnable)",
+						"justification": "Not part of the public API"
+					},
+					{
+						"code": "java.method.removed",
+						"old": "method boolean org.eclipse.californium.scandium.DTLSConnector::executeInbound(java.util.concurrent.Executor, java.net.InetSocketAddress, java.lang.Runnable)",
+						"justification": "Not part of the public API"
+					},
+					{
+						"code": "java.method.removed",
+						"old": "method boolean org.eclipse.californium.scandium.DTLSConnector::executeOutbound(java.util.concurrent.Executor, java.net.InetSocketAddress, java.lang.Runnable)",
+						"justification": "Not part of the public API"
+					}
+				]
+			}
+		}
+	]
+}
