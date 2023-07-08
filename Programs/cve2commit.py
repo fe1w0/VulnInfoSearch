@@ -32,12 +32,23 @@ def check_github_commit_url(url):
 def sanitize_url(url):
     return url.replace(",", "")
 
+def get_whole_url(url):
+    try:
+        regex = r"(https:\/\/github\.com\/[^\/]+\/[^\/]+\/commit\/[0-9a-zA-Z]+)"
+        urls = re.findall(regex, url)
+        matched_part = urls[0]
+        return matched_part
+    except Exception as e:
+        print(f"[!] Error: {e} Match Error {url}")
+    
 def get_commits_from_cve(cve):
     github_commit_links = []
     if cve != "":
         request_url = "https://nvd.nist.gov/vuln/detail/" + cve
         try:
-            html_text = requests.get(request_url,  proxies=LOCAL_PROXIES).text
+            response = requests.get(request_url,  proxies=LOCAL_PROXIES)
+            response.raise_for_status
+            html_text = response.text
             # html_text = requests.get(request_url).text
             # 处理 html 文档
             if html_text != "":
@@ -47,8 +58,9 @@ def get_commits_from_cve(cve):
                 for link in links:
                     tmp_link = sanitize_url(link.get("href"))
                     if(check_github_commit_url(tmp_link)):
+                        tmp_link = get_whole_url(tmp_link)
                         github_commit_links.append(tmp_link)
-            print("[+] Success: " + request_url)
+            print("[+] Success: " + request_url, github_commit_links)
         except Exception as e:
             print(f"[!] Error: {request_url} 查询失败：{e}, 重新尝试")
             get_commits_from_cve(cve)
@@ -94,7 +106,7 @@ def get_all_commit_links():
     
 def save_output():
     global CWE_CVE_COMMIT
-    with open('output/cve2commit.yml', 'w') as f:
+    with open('Output/cve2commit.yml', 'w') as f:
         yaml.dump(CWE_CVE_COMMIT, f, indent=4, sort_keys=False)
     
 if __name__ == "__main__":
