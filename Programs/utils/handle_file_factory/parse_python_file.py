@@ -1,4 +1,5 @@
 import ast
+import astunparse
 
 def extract_functions(file_path):
     with open(file_path, "r") as file:
@@ -12,7 +13,8 @@ def extract_functions(file_path):
     for node in ast.walk(tree):
         if isinstance(node, ast.FunctionDef):
             function_name = node.name
-            function_body = ast.unparse(node.body).encode()
+            # function_body 也需要含有 函数声明信息
+            function_body = ast.unparse(node).encode()
             
             function_names.append(function_name)
             function_bodies[function_name] = {"function_name": function_name, "function_body": function_body}

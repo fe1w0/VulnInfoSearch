@@ -4,7 +4,7 @@ import os
 import glob
 import re
 
-cindex.Config.set_library_path('/Library/Developer/CommandLineTools/usr/lib')
+cindex.Config.set_library_path('/opt/homebrew/opt/llvm/lib/')
 
 def extract_functions(file_path):
     """批处理提取c文件
@@ -13,7 +13,7 @@ def extract_functions(file_path):
         file_path {_type_} -- 文件路径
     """
     index = cindex.Index.create()
-    tu = index.parse(file_path)
+    tu = index.parse(file_path, args='-xc++ --std=c++11 -Wundef'.split())
 
     function_bodies = {}
     function_names = []
@@ -34,12 +34,11 @@ def extract_functions(file_path):
             function_names.append(function_name)
             function_bodies[function_name] = {"function_name": function_name, "function_body": function_body}
             
-            
     return function_bodies, function_names
 
-
 # def test():
-#     function_bodies, function_names = extract_functions("DataSet/CommitsCollection/C/krb5_krb5/fa62bd33a0c0889c083999c0289ffa81a5d51e7b/src_lib_krb5_krb_pac.c")
+#     file = "DataSet/CommitsCollection/C/krb5_krb5/fa62bd33a0c0889c083999c0289ffa81a5d51e7b/src_lib_krb5_krb_pac.c"
+#     function_bodies, function_names = extract_functions(file)
 #     print(function_names)
     
 # test()
