@@ -1,0 +1,59 @@
+PIX  *
+pixBlockconv(PIX     *pix,
+             l_int32  wc,
+             l_int32  hc)
+{
+l_int32  w, h, d;
+PIX     *pixs, *pixd, *pixr, *pixrc, *pixg, *pixgc, *pixb, *pixbc;
+
+    PROCNAME("pixBlockconv");
+
+    if (!pix)
+        return (PIX *)ERROR_PTR("pix not defined", procName, NULL);
+    if (wc < 0) wc = 0;
+    if (hc < 0) hc = 0;
+    pixGetDimensions(pix, &w, &h, &d);
+    if (w < 2 * wc + 1 || h < 2 * hc + 1) {
+        wc = L_MIN(wc, (w - 1) / 2);
+        hc = L_MIN(hc, (h - 1) / 2);
+        L_WARNING("kernel too large; reducing!\n", procName);
+        L_INFO("wc = %d, hc = %d\n", procName, wc, hc);
+    }
+    if (wc == 0 && hc == 0)   /* no-op */
+        return pixCopy(NULL, pix);
+
+        /* Remove colormap if necessary */
+    if ((d == 2 || d == 4 || d == 8) && pixGetColormap(pix)) {
+        L_WARNING("pix has colormap; removing\n", procName);
+        pixs = pixRemoveColormap(pix, REMOVE_CMAP_BASED_ON_SRC);
+        d = pixGetDepth(pixs);
+    } else {
+        pixs = pixClone(pix);
+    }
+
+    if (d != 8 && d != 32) {
+        pixDestroy(&pixs);
+        return (PIX *)ERROR_PTR("depth not 8 or 32 bpp", procName, NULL);
+    }
+
+    if (d == 8) {
+        pixd = pixBlockconvGray(pixs, NULL, wc, hc);
+    } else { /* d == 32 */
+        pixr = pixGetRGBComponent(pixs, COLOR_RED);
+        pixrc = pixBlockconvGray(pixr, NULL, wc, hc);
+        pixDestroy(&pixr);
+        pixg = pixGetRGBComponent(pixs, COLOR_GREEN);
+        pixgc = pixBlockconvGray(pixg, NULL, wc, hc);
+        pixDestroy(&pixg);
+        pixb = pixGetRGBComponent(pixs, COLOR_BLUE);
+        pixbc = pixBlockconvGray(pixb, NULL, wc, hc);
+        pixDestroy(&pixb);
+        pixd = pixCreateRGBImage(pixrc, pixgc, pixbc);
+        pixDestroy(&pixrc);
+        pixDestroy(&pixgc);
+        pixDestroy(&pixbc);
+    }
+
+    pixDestroy(&pixs);
+    return pixd;
+}

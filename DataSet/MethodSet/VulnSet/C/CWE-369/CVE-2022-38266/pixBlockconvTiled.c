@@ -1,0 +1,103 @@
+PIX *
+pixBlockconvTiled(PIX     *pix,
+                  l_int32  wc,
+                  l_int32  hc,
+                  l_int32  nx,
+                  l_int32  ny)
+{
+l_int32     i, j, w, h, d, xrat, yrat;
+PIX        *pixs, *pixd, *pixc, *pixt;
+PIX        *pixr, *pixrc, *pixg, *pixgc, *pixb, *pixbc;
+PIXTILING  *pt;
+
+    PROCNAME("pixBlockconvTiled");
+
+    if (!pix)
+        return (PIX *)ERROR_PTR("pix not defined", procName, NULL);
+    if (wc < 0) wc = 0;
+    if (hc < 0) hc = 0;
+    pixGetDimensions(pix, &w, &h, &d);
+    if (w < 2 * wc + 3 || h < 2 * hc + 3) {
+        wc = L_MAX(0, L_MIN(wc, (w - 3) / 2));
+        hc = L_MAX(0, L_MIN(hc, (h - 3) / 2));
+        L_WARNING("kernel too large; reducing!\n", procName);
+        L_INFO("wc = %d, hc = %d\n", procName, wc, hc);
+    }
+    if (wc == 0 && hc == 0)   /* no-op */
+        return pixCopy(NULL, pix);
+    if (nx <= 1 && ny <= 1)
+        return pixBlockconv(pix, wc, hc);
+
+        /* Test to see if the tiles are too small.  The required
+         * condition is that the tile dimensions must be at least
+         * (wc + 2) x (hc + 2). */
+    xrat = w / nx;
+    yrat = h / ny;
+    if (xrat < wc + 2) {
+        nx = w / (wc + 2);
+        L_WARNING("tile width too small; nx reduced to %d\n", procName, nx);
+    }
+    if (yrat < hc + 2) {
+        ny = h / (hc + 2);
+        L_WARNING("tile height too small; ny reduced to %d\n", procName, ny);
+    }
+
+        /* Remove colormap if necessary */
+    if ((d == 2 || d == 4 || d == 8) && pixGetColormap(pix)) {
+        L_WARNING("pix has colormap; removing\n", procName);
+        pixs = pixRemoveColormap(pix, REMOVE_CMAP_BASED_ON_SRC);
+        d = pixGetDepth(pixs);
+    } else {
+        pixs = pixClone(pix);
+    }
+
+    if (d != 8 && d != 32) {
+        pixDestroy(&pixs);
+        return (PIX *)ERROR_PTR("depth not 8 or 32 bpp", procName, NULL);
+    }
+
+       /* Note that the overlaps in the width and height that
+        * are added to the tile are (wc + 2) and (hc + 2).
+        * These overlaps are removed by pixTilingPaintTile().
+        * They are larger than the extent of the filter because
+        * although the filter is symmetric with respect to its origin,
+        * the implementation is asymmetric -- see the implementation in
+        * pixBlockconvGrayTile(). */
+    if ((pixd = pixCreateTemplate(pixs)) == NULL) {
+        pixDestroy(&pixs);
+        return (PIX *)ERROR_PTR("pixd not made", procName, NULL);
+    }
+    pt = pixTilingCreate(pixs, nx, ny, 0, 0, wc + 2, hc + 2);
+    for (i = 0; i < ny; i++) {
+        for (j = 0; j < nx; j++) {
+            pixt = pixTilingGetTile(pt, i, j);
+
+                /* Convolve over the tile */
+            if (d == 8) {
+                pixc = pixBlockconvGrayTile(pixt, NULL, wc, hc);
+            } else { /* d == 32 */
+                pixr = pixGetRGBComponent(pixt, COLOR_RED);
+                pixrc = pixBlockconvGrayTile(pixr, NULL, wc, hc);
+                pixDestroy(&pixr);
+                pixg = pixGetRGBComponent(pixt, COLOR_GREEN);
+                pixgc = pixBlockconvGrayTile(pixg, NULL, wc, hc);
+                pixDestroy(&pixg);
+                pixb = pixGetRGBComponent(pixt, COLOR_BLUE);
+                pixbc = pixBlockconvGrayTile(pixb, NULL, wc, hc);
+                pixDestroy(&pixb);
+                pixc = pixCreateRGBImage(pixrc, pixgc, pixbc);
+                pixDestroy(&pixrc);
+                pixDestroy(&pixgc);
+                pixDestroy(&pixbc);
+            }
+
+            pixTilingPaintTile(pixd, i, j, pixc, pt);
+            pixDestroy(&pixt);
+            pixDestroy(&pixc);
+        }
+    }
+
+    pixDestroy(&pixs);
+    pixTilingDestroy(&pt);
+    return pixd;
+}

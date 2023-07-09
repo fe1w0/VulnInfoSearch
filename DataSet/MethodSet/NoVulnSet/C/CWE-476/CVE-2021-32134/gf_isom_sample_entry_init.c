@@ -1,0 +1,4 @@
+void gf_isom_sample_entry_init(GF_SampleEntryBox *ent)
+{
+	ent->internal_type = GF_ISOM_SAMPLE_ENTRY_MP4S;
+}

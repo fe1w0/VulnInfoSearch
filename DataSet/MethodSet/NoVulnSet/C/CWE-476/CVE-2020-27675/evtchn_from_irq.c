@@ -1,0 +1,11 @@
+evtchn_port_t evtchn_from_irq(unsigned irq)
+{
+	const struct irq_info *info = NULL;
+
+	if (likely(irq < nr_irqs))
+		info = info_for_irq(irq);
+	if (!info)
+		return 0;
+
+	return info->evtchn;
+}

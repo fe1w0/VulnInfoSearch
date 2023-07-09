@@ -5,6 +5,8 @@ import hashlib
 import json
 import multiprocessing
 import task_timer
+from handle_yaml_file import read_yaml_file
+
 
 TOTAL_TASKS = 0
 COMPLETED_TASKS = 0
@@ -13,11 +15,6 @@ LOCAL_PROXIES={
     "http" : "http://127.0.0.1:7890",
     "https" : "http://127.0.0.1:7890"
 }
-
-def read_commit_yaml(commit_yaml_file):
-    with open(commit_yaml_file, 'r') as file:
-        commit_yaml = yaml.safe_load(file)
-    return commit_yaml
 
 def convert_file_name(file_name):
     """转换文件名
@@ -137,7 +134,7 @@ def get_download_tasks_from_commit_files():
     global DOWNLOAD_TASK
     commit_yaml_file = "Output/cve2commit_sanitize.yml"
     
-    commits_yaml = read_commit_yaml(commit_yaml_file)
+    commits_yaml = read_yaml_file(commit_yaml_file)
     
     for cwe in commits_yaml:
         cves = commits_yaml[cwe]

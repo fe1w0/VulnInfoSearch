@@ -1,0 +1,83 @@
+PIX *
+pixBlockconvGrayTile(PIX     *pixs,
+                     PIX     *pixacc,
+                     l_int32  wc,
+                     l_int32  hc)
+{
+l_int32    w, h, d, wd, hd, i, j, imin, imax, jmin, jmax, wplt, wpld;
+l_float32  norm;
+l_uint32   val;
+l_uint32  *datat, *datad, *lined, *linemint, *linemaxt;
+PIX       *pixt, *pixd;
+
+    PROCNAME("pixBlockconvGrayTile");
+
+    if (!pixs)
+        return (PIX *)ERROR_PTR("pix not defined", procName, NULL);
+    pixGetDimensions(pixs, &w, &h, &d);
+    if (d != 8)
+        return (PIX *)ERROR_PTR("pixs not 8 bpp", procName, NULL);
+    if (wc < 0) wc = 0;
+    if (hc < 0) hc = 0;
+    if (w < 2 * wc + 3 || h < 2 * hc + 3) {
+        wc = L_MAX(0, L_MIN(wc, (w - 3) / 2));
+        hc = L_MAX(0, L_MIN(hc, (h - 3) / 2));
+        L_WARNING("kernel too large; reducing!\n", procName);
+        L_INFO("wc = %d, hc = %d\n", procName, wc, hc);
+    }
+    if (wc == 0 && hc == 0)
+        return pixCopy(NULL, pixs);
+    wd = w - 2 * wc;
+    hd = h - 2 * hc;
+
+    if (pixacc) {
+        if (pixGetDepth(pixacc) == 32) {
+            pixt = pixClone(pixacc);
+        } else {
+            L_WARNING("pixacc not 32 bpp; making new one\n", procName);
+            if ((pixt = pixBlockconvAccum(pixs)) == NULL)
+                return (PIX *)ERROR_PTR("pixt not made", procName, NULL);
+        }
+    } else {
+        if ((pixt = pixBlockconvAccum(pixs)) == NULL)
+            return (PIX *)ERROR_PTR("pixt not made", procName, NULL);
+    }
+
+    if ((pixd = pixCreateTemplate(pixs)) == NULL) {
+        pixDestroy(&pixt);
+        return (PIX *)ERROR_PTR("pixd not made", procName, NULL);
+    }
+    datat = pixGetData(pixt);
+    wplt = pixGetWpl(pixt);
+    datad = pixGetData(pixd);
+    wpld = pixGetWpl(pixd);
+    norm = 1. / (l_float32)((2 * wc + 1) * (2 * hc + 1));
+
+        /* Do the convolution over the subregion of size (wd - 2, hd - 2),
+         * which exactly corresponds to the size of the subregion that
+         * will be extracted by pixTilingPaintTile().  Note that the
+         * region in which points are computed is not symmetric about
+         * the center of the images; instead the computation in
+         * the accumulator image is shifted up and to the left by 1,
+         * relative to the center, because the 4 accumulator sampling
+         * points are taken at the LL corner of the filter and at 3 other
+         * points that are shifted -wc and -hc to the left and above.  */
+    for (i = hc; i < hc + hd - 2; i++) {
+        imin = L_MAX(i - hc - 1, 0);
+        imax = L_MIN(i + hc, h - 1);
+        lined = datad + i * wpld;
+        linemint = datat + imin * wplt;
+        linemaxt = datat + imax * wplt;
+        for (j = wc; j < wc + wd - 2; j++) {
+            jmin = L_MAX(j - wc - 1, 0);
+            jmax = L_MIN(j + wc, w - 1);
+            val = linemaxt[jmax] - linemaxt[jmin]
+                  + linemint[jmin] - linemint[jmax];
+            val = (l_uint8)(norm * val + 0.5);
+            SET_DATA_BYTE(lined, j, val);
+        }
+    }
+
+    pixDestroy(&pixt);
+    return pixd;
+}

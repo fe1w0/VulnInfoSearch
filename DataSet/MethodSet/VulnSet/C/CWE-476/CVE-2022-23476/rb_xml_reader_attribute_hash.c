@@ -1,0 +1,33 @@
+static VALUE
+rb_xml_reader_attribute_hash(VALUE rb_reader)
+{
+  VALUE rb_attributes = rb_hash_new();
+  xmlTextReaderPtr c_reader;
+  xmlNodePtr c_node;
+  xmlAttrPtr c_property;
+
+  Data_Get_Struct(rb_reader, xmlTextReader, c_reader);
+
+  if (!has_attributes(c_reader)) {
+    return rb_attributes;
+  }
+
+  c_node = xmlTextReaderExpand(c_reader);
+  c_property = c_node->properties;
+  while (c_property != NULL) {
+    VALUE rb_name = NOKOGIRI_STR_NEW2(c_property->name);
+    VALUE rb_value = Qnil;
+    xmlChar *c_value = xmlNodeGetContent((xmlNode *)c_property);
+
+    if (c_value) {
+      rb_value = NOKOGIRI_STR_NEW2(c_value);
+      xmlFree(c_value);
+    }
+
+    rb_hash_aset(rb_attributes, rb_name, rb_value);
+
+    c_property = c_property->next;
+  }
+
+  return rb_attributes;
+}

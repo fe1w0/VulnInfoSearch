@@ -1,0 +1,56 @@
+PIX *
+pixBlockconvGrayUnnormalized(PIX     *pixs,
+                             l_int32  wc,
+                             l_int32  hc)
+{
+l_int32    i, j, w, h, d, wpla, wpld, jmax;
+l_uint32  *linemina, *linemaxa, *lined, *dataa, *datad;
+PIX       *pixsb, *pixacc, *pixd;
+
+    PROCNAME("pixBlockconvGrayUnnormalized");
+
+    if (!pixs)
+        return (PIX *)ERROR_PTR("pixs not defined", procName, NULL);
+    pixGetDimensions(pixs, &w, &h, &d);
+    if (d != 8)
+        return (PIX *)ERROR_PTR("pixs not 8 bpp", procName, NULL);
+    if (wc < 0) wc = 0;
+    if (hc < 0) hc = 0;
+    if (w < 2 * wc + 1 || h < 2 * hc + 1) {
+        wc = L_MIN(wc, (w - 1) / 2);
+        hc = L_MIN(hc, (h - 1) / 2);
+        L_WARNING("kernel too large; reducing!\n", procName);
+        L_INFO("wc = %d, hc = %d\n", procName, wc, hc);
+    }
+    if (wc == 0 && hc == 0)   /* no-op */
+        return pixCopy(NULL, pixs);
+
+    if ((pixsb = pixAddMirroredBorder(pixs, wc + 1, wc, hc + 1, hc)) == NULL)
+        return (PIX *)ERROR_PTR("pixsb not made", procName, NULL);
+    pixacc = pixBlockconvAccum(pixsb);
+    pixDestroy(&pixsb);
+    if (!pixacc)
+        return (PIX *)ERROR_PTR("pixacc not made", procName, NULL);
+    if ((pixd = pixCreate(w, h, 32)) == NULL) {
+        pixDestroy(&pixacc);
+        return (PIX *)ERROR_PTR("pixd not made", procName, NULL);
+    }
+
+    wpla = pixGetWpl(pixacc);
+    wpld = pixGetWpl(pixd);
+    datad = pixGetData(pixd);
+    dataa = pixGetData(pixacc);
+    for (i = 0; i < h; i++) {
+        lined = datad + i * wpld;
+        linemina = dataa + i * wpla;
+        linemaxa = dataa + (i + 2 * hc + 1) * wpla;
+        for (j = 0; j < w; j++) {
+            jmax = j + 2 * wc + 1;
+            lined[j] = linemaxa[jmax] - linemaxa[j] -
+                       linemina[jmax] + linemina[j];
+        }
+    }
+
+    pixDestroy(&pixacc);
+    return pixd;
+}
