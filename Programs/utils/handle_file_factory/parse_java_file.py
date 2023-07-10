@@ -27,9 +27,11 @@ def extract_functions(java_file):
             if isinstance(child, javalang.tree.FieldDeclaration):
                 fields.append(lines[child.position[0] - 1])
             if isinstance(child, javalang.tree.MethodDeclaration):
+                
                 start_line, start_column = child.position
                 function_name = child.name
                 function_names.append(function_name)
+                # print(child.modifiers, function_name)
                 tmp_function_names.append(function_name)
                 function_body = extract_function_body(lines, start_line, child.body)
                 
@@ -62,14 +64,61 @@ def extract_function_body(lines, start_line, body):
             end_line += 1
 
     function_lines = lines[start_line - 1: end_line + 1]
-
+    
     function_body = '\n'.join(function_lines)
     return function_body
 
-# def test():
-#     file_name = "DataSet/CommitsCollection/Java/snakeyaml_snakeyaml/4b8d1af4bd422a015fbb07d235f282412c863220/src_test_java_org_yaml_snakeyaml_issues_issue525_FuzzyStackOverflowTest.java"
-#     file_name = "DataSet/CommitsCollection/Java/eclipse-californium_californium/9112803a20152d1386415a4418e639919f8ac12b/scandium-core_src_main_java_org_eclipse_californium_scandium_DTLSConnector.java"
-#     functions, functions_name  = extract_functions(file_name)
-#     print(functions['stop']['function_body'].decode())
+def handle_function_body_java(class_declaration, fields, function_body):
+    """处理java的函数体
+
+    _extended_summary_
+
+    Arguments:
+        class_declaration {_type_} -- _description_
+        fields {list} -- _description_
+        function_body {_type_} -- _description_
+
+    Returns:
+        _type_ -- _description_
+    """
+    return_class_function_body = class_declaration
+    if '{' not in return_class_function_body:
+        return_class_function_body += '\n{'
+    return_class_function_body += '\n'
+    
+    for field in fields:
+        return_class_function_body += field + '\n'
+
+    return_class_function_body += function_body + '\n'
+    
+    return_class_function_body += '}'
+
+    return return_class_function_body
+
+def change_java_method_modifier_for_joern(function_body_code):
+    source_code_lines = function_body_code.split('\n')
+    tmp_code_line = (source_code_lines[0].replace("protected", "public").replace("private", "public"))
+    source_code_lines[0] = tmp_code_line
+    changed_function_body_code = "\n".join(source_code_lines)
+    return changed_function_body_code
+    
+    
+
+def test():
+    file_name = "DataSet/CommitsCollection/Java/snakeyaml_snakeyaml/4b8d1af4bd422a015fbb07d235f282412c863220/src_test_java_org_yaml_snakeyaml_issues_issue525_FuzzyStackOverflowTest.java"
+    file_name = "DataSet/CommitsCollection/Java/eclipse-californium_californium/9112803a20152d1386415a4418e639919f8ac12b/scandium-core_src_main_java_org_eclipse_californium_scandium_DTLSConnector.java"
+    functions, functions_name  = extract_functions(file_name)
+    tmp_function_body = functions['createConnectionStore']
+    
+    
+    tmp_function_body_code = tmp_function_body["function_body"]
+    
+    handle_function_body = handle_function_body_java(tmp_function_body["class_declaration"], tmp_function_body["fields"], tmp_function_body["function_body"])
+    
+    result_function_body = change_java_method_modifier_for_joern(tmp_function_body_code)
+    
+    print(tmp_function_body_code)
+    
+    print(result_function_body)
 
 # test()

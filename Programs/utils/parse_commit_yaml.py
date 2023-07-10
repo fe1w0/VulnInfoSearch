@@ -100,6 +100,13 @@ def get_lang_extension(program_lang):
     elif program_lang == "Python":
         return ".py"
 
+def change_java_method_modifier_for_joern(function_body_code):
+    source_code_lines = function_body_code.split('\n')
+    tmp_code_line = (source_code_lines[0].replace("protected", "public").replace("private", "public"))
+    source_code_lines[0] = tmp_code_line
+    changed_function_body_code = "\n".join(source_code_lines)
+    return changed_function_body_code
+
 def write_function_body(function_bodies_set, cwe_id, cve_id, program_language, tmp_folder="DataSet/MethodSet/VulnSet/"):
     folder = tmp_folder + program_language + "/" + cwe_id + "/" + cve_id + "/"
     os.makedirs(folder, exist_ok=True)
@@ -112,6 +119,8 @@ def write_function_body(function_bodies_set, cwe_id, cve_id, program_language, t
             function_name = function_item["function_name"]
             
             if program_language in ["Java"]:
+                tmp_function_body_code = function_item["function_body"]["function_body"]
+                function_item["function_body"]["function_body"] = change_java_method_modifier_for_joern(tmp_function_body_code)
                 function_body = handle_function_body_java(function_item["function_body"]["class_declaration"], function_item["function_body"]["fields"], function_item["function_body"]["function_body"]).encode()
             else:
                 function_body = function_item["function_body"]["function_body"]
