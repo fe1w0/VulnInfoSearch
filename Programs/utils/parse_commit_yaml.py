@@ -59,7 +59,7 @@ def handle_function_body_java(class_declaration, fields, function_body):
     return_class_function_body += '\n'
     
     for field in fields:
-        return_class_function_body += field + '\n'
+        return_class_function_body += field.replace("protected", "public").replace("private", "public") + '\n'
 
     return_class_function_body += function_body + '\n'
     
