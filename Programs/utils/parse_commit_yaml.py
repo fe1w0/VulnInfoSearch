@@ -90,7 +90,7 @@ def write_function_body(function_bodies_set, cwe_id, cve_id, program_language, t
                 file.write(function_body)
             file.close()    
         
-            print(f"[+] Write: {file_path}")
+            # print(f"[+] Write: {file_path}")
 
 
 def handle_different_code_from_commits(defective_commit_file_path, patch_commit_file_path, program_language, cve_id, cwe_id):
