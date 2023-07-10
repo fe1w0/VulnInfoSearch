@@ -40,6 +40,34 @@ def parse_commit_yaml():
                         patch_commit_file_path = "DataSet/CommitsCollection" + "/" + program_language + "/" + convert_file_name(project_name) + "/" +  tmp_commit["commit_hashCode"]["current_commit_hashCode"] + "/" +  convert_file_name(file_name)
                         handle_different_code_from_commits(defective_commit_file_path, patch_commit_file_path, program_language, cve_id, cwe_id)
 
+def handle_function_body_java(class_declaration, fields, function_body):
+    """处理java的函数体
+
+    _extended_summary_
+
+    Arguments:
+        class_declaration {_type_} -- _description_
+        fields {list} -- _description_
+        function_body {_type_} -- _description_
+
+    Returns:
+        _type_ -- _description_
+    """
+    return_class_function_body = class_declaration
+    if '{' not in return_class_function_body:
+        return_class_function_body += '\n{'
+    return_class_function_body += '\n'
+    
+    for field in fields:
+        return_class_function_body += field + '\n'
+
+    return_class_function_body += function_body + '\n'
+    
+    return_class_function_body += '}'
+
+    return return_class_function_body
+    
+
 def diff_function_bodies(defective_commit_function_bodies, patch_commit_function_bodies, total_function_names):
     
     vuln_info = []
@@ -82,7 +110,11 @@ def write_function_body(function_bodies_set, cwe_id, cve_id, program_language, t
     
         for function_item in function_bodies_set:
             function_name = function_item["function_name"]
-            function_body = function_item["function_body"]["function_body"]
+            
+            if program_language in ["Java"]:
+                function_body = handle_function_body_java(function_item["function_body"]["class_declaration"], function_item["function_body"]["fields"], function_item["function_body"]["function_body"]).encode()
+            else:
+                function_body = function_item["function_body"]["function_body"]
 
             file_path = folder + function_name + lang_extension
             

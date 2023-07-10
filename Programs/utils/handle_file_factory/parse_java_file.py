@@ -1,23 +1,7 @@
 # take from Tian Xiao
 import javalang.tree
 import javalang.ast
-import re
-import glob
 
-def handle_function_body(class_declaration, fields, function_body):
-    return_class = class_declaration
-    if '{' not in return_class:
-        return_class += '\n{'
-    return_class += '\n'
-    
-    for field in fields:
-        return_class += field + '\n'
-
-    return_class += function_body + '\n'
-    
-    return_class += '}'
-
-    return return_class
 
 def extract_functions(java_file):
     with open(java_file, 'r') as file:
@@ -52,8 +36,8 @@ def extract_functions(java_file):
                 tmp_function_bodies[function_name] = function_body
         
         for function_name in tmp_function_names:
-            function_body = handle_function_body(class_declaration, fields, tmp_function_bodies[function_name])
-            function_bodies[function_name] = {"function_name": function_name, "function_body": function_body.encode()}
+            function_body = tmp_function_bodies[function_name]
+            function_bodies[function_name] = {"function_name": function_name, "function_body": function_body, "fields": fields, "class_declaration": class_declaration}
             
     return function_bodies, function_names
 
@@ -86,6 +70,6 @@ def extract_function_body(lines, start_line, body):
 #     file_name = "DataSet/CommitsCollection/Java/snakeyaml_snakeyaml/4b8d1af4bd422a015fbb07d235f282412c863220/src_test_java_org_yaml_snakeyaml_issues_issue525_FuzzyStackOverflowTest.java"
 #     file_name = "DataSet/CommitsCollection/Java/eclipse-californium_californium/9112803a20152d1386415a4418e639919f8ac12b/scandium-core_src_main_java_org_eclipse_californium_scandium_DTLSConnector.java"
 #     functions, functions_name  = extract_functions(file_name)
-#     print(functions['stop']['function_body'])
+#     print(functions['stop']['function_body'].decode())
 
 # test()
