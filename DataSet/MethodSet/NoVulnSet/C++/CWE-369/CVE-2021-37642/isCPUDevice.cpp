@@ -1,0 +1,3 @@
+bool isCPUDevice() {
+  return false;
+}

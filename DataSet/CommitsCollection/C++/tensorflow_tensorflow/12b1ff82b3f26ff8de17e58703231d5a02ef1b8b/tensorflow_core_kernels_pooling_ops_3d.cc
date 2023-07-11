@@ -46,7 +46,7 @@ typedef Eigen::ThreadPoolDevice CPUDevice;
 typedef Eigen::GpuDevice GPUDevice;
 
 Pool3dParameters::Pool3dParameters(OpKernelContext* context,
-                                   const std::vector<int32>& ksize,
+                                   const std::vector<int32>& ksize,b'* context'
                                    const std::vector<int32>& stride,
                                    Padding padding, TensorFormat data_format,
                                    const TensorShape& tensor_in_shape) {

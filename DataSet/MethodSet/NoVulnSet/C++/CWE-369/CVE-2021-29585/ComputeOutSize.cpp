@@ -1,0 +1,17 @@
+inline int ComputeOutSize(TfLitePadding padding, int image_size,
+                          int filter_size, int stride, int dilation_rate = 1) {
+  int effective_filter_size = (filter_size - 1) * dilation_rate + 1;
+
+  // TODO(b/186448822): This uses 0 since the function has no other way to
+  // report error case
+  if (stride == 0) return 0;
+
+  switch (padding) {
+    case kTfLitePaddingSame:
+      return (image_size + stride - 1) / stride;
+    case kTfLitePaddingValid:
+      return (image_size + stride - effective_filter_size) / stride;
+    default:
+      return 0;
+  }
+}
