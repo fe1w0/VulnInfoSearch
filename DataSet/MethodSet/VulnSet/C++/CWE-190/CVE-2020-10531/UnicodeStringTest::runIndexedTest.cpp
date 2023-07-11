@@ -1,0 +1,35 @@
+void UnicodeStringTest::runIndexedTest( int32_t index, UBool exec, const char* &name, char *par)
+{
+    if (exec) logln("TestSuite UnicodeStringTest: ");
+    TESTCASE_AUTO_BEGIN;
+    TESTCASE_AUTO_CREATE_CLASS(StringCaseTest);
+    TESTCASE_AUTO(TestBasicManipulation);
+    TESTCASE_AUTO(TestCompare);
+    TESTCASE_AUTO(TestExtract);
+    TESTCASE_AUTO(TestRemoveReplace);
+    TESTCASE_AUTO(TestSearching);
+    TESTCASE_AUTO(TestSpacePadding);
+    TESTCASE_AUTO(TestPrefixAndSuffix);
+    TESTCASE_AUTO(TestFindAndReplace);
+    TESTCASE_AUTO(TestBogus);
+    TESTCASE_AUTO(TestReverse);
+    TESTCASE_AUTO(TestMiscellaneous);
+    TESTCASE_AUTO(TestStackAllocation);
+    TESTCASE_AUTO(TestUnescape);
+    TESTCASE_AUTO(TestCountChar32);
+    TESTCASE_AUTO(TestStringEnumeration);
+    TESTCASE_AUTO(TestNameSpace);
+    TESTCASE_AUTO(TestUTF32);
+    TESTCASE_AUTO(TestUTF8);
+    TESTCASE_AUTO(TestReadOnlyAlias);
+    TESTCASE_AUTO(TestAppendable);
+    TESTCASE_AUTO(TestUnicodeStringImplementsAppendable);
+    TESTCASE_AUTO(TestSizeofUnicodeString);
+    TESTCASE_AUTO(TestStartsWithAndEndsWithNulTerminated);
+    TESTCASE_AUTO(TestMoveSwap);
+    TESTCASE_AUTO(TestUInt16Pointers);
+    TESTCASE_AUTO(TestWCharPointers);
+    TESTCASE_AUTO(TestNullPointers);
+    TESTCASE_AUTO(TestUnicodeStringInsertAppendToSelf);
+    TESTCASE_AUTO_END;
+}

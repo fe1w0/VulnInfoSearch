@@ -4,7 +4,7 @@ import javalang.ast
 
 
 def extract_functions(java_file):
-    with open(java_file, 'r') as file:
+    with open(java_file, "r", errors='ignore')as file:
         source_code = file.read()
     tree = javalang.parse.parse(source_code)  # type: javalang.ast.Node
     lines = source_code.split('\n')
@@ -25,11 +25,15 @@ def extract_functions(java_file):
 
         for child in node.body:
             if isinstance(child, javalang.tree.FieldDeclaration):
+                start_line, start_column = child.position
+                # print(child.position)
                 fields.append(lines[child.position[0] - 1])
             if isinstance(child, javalang.tree.MethodDeclaration):
                 
                 start_line, start_column = child.position
                 function_name = child.name
+                if function_name in function_names:
+                    function_name += "@"
                 function_names.append(function_name)
                 # print(child.modifiers, function_name)
                 tmp_function_names.append(function_name)
@@ -117,7 +121,7 @@ def test():
     
     result_function_body = change_java_method_modifier_for_joern(tmp_function_body_code)
     
-    print(tmp_function_body_code)
+    print(handle_function_body)
     
     print(result_function_body)
 

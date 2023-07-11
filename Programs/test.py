@@ -53,3 +53,20 @@
 #         function_body = node.body
 #         print("Function:", function_name)
 #         print("Body:", ast.unparse(function_body))
+
+
+# from tree_sitter import Language, Parser
+
+# Language.build_library(
+#   # Store the library in the `build` directory
+#   'build/my-languages.so',
+
+#   # Include one or more languages
+#   [
+#     'tools/tree-sitter-grammers/tree-sitter-c',
+#     'tools/tree-sitter-grammers/tree-sitter-java',
+#     'tools/tree-sitter-grammers/tree-sitter-cpp',
+#     'tools/tree-sitter-grammers/tree-sitter-python'
+#   ]
+# )
+

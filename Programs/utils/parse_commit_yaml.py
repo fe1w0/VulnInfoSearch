@@ -4,7 +4,8 @@ import os
 from task_timer import timer
 import traceback
 
-from handle_file_factory.parse_c_and_cpp_file import extract_functions as extract_functions_c
+from handle_file_factory.parse_c_file import extract_functions as extract_functions_c
+from handle_file_factory.parse_cpp_file import extract_functions as extract_functions_cpp
 from handle_file_factory.parse_java_file import extract_functions as extract_functions_java
 from handle_file_factory.parse_python_file import extract_functions as extract_functions_python
 
@@ -58,8 +59,8 @@ def handle_function_body_java(class_declaration, fields, function_body):
         return_class_function_body += '\n{'
     return_class_function_body += '\n'
     
-    for field in fields:
-        return_class_function_body += field.replace("protected", "public").replace("private", "public") + '\n'
+    # for field in fields:
+    #     return_class_function_body += field.replace("protected", "public").replace("private", "public") + '\n'
 
     return_class_function_body += function_body + '\n'
     
@@ -151,9 +152,12 @@ def handle_different_code_from_commits(defective_commit_file_path, patch_commit_
     global TOTAL_TIMER, ERROR_TIMER
     try:
         if check_file_exist(defective_commit_file_path) and check_file_exist(patch_commit_file_path) and program_language in OPERATION_LANG:
-            if program_language in ["C", "C++"]:
+            if program_language in ["C"]:
                 defective_commit_function_bodies, defective_commit_function_names = extract_functions_c(defective_commit_file_path)
                 patch_commit_function_bodies, patch_commit_function_names = extract_functions_c(patch_commit_file_path)
+            elif program_language in ["C++"]:
+                defective_commit_function_bodies, defective_commit_function_names = extract_functions_cpp(defective_commit_file_path)
+                patch_commit_function_bodies, patch_commit_function_names = extract_functions_cpp(patch_commit_file_path)
             elif program_language in ["Java"]:
                 defective_commit_function_bodies, defective_commit_function_names = extract_functions_java(defective_commit_file_path)
                 patch_commit_function_bodies, patch_commit_function_names = extract_functions_java(patch_commit_file_path)

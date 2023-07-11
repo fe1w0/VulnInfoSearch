@@ -2,7 +2,7 @@ import ast
 import astunparse
 
 def extract_functions(file_path):
-    with open(file_path, "r") as file:
+    with open(file_path, "r", errors='ignore')as file:
         source_code = file.read()
     
     tree = ast.parse(source_code)
@@ -16,6 +16,8 @@ def extract_functions(file_path):
             # function_body 也需要含有 函数声明信息
             function_body = ast.unparse(node).encode()
             
+            if function_name in function_names:
+                function_name += "@"
             function_names.append(function_name)
             function_bodies[function_name] = {"function_name": function_name, "function_body": function_body}
 
