@@ -1,5 +1,7 @@
 import ast
 import astunparse
+from handle_file_factory.utils_tree_sitter import names_count
+
 
 def extract_functions(file_path):
     with open(file_path, "r", errors='ignore')as file:
@@ -16,8 +18,8 @@ def extract_functions(file_path):
             # function_body 也需要含有 函数声明信息
             function_body = ast.unparse(node).encode()
             
-            if function_name in function_names:
-                function_name += "@"
+            function_name += "@" * names_count(function_names, function_name)
+            
             function_names.append(function_name)
             function_bodies[function_name] = {"function_name": function_name, "function_body": function_body}
 

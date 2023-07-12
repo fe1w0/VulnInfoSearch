@@ -1,4 +1,4 @@
-from handle_file_factory.utils_tree_sitter import Parser, C_LANGUAGE
+from handle_file_factory.utils_tree_sitter import Parser, C_LANGUAGE, names_count
 # from utils_tree_sitter import Parser, C_LANGUAGE
 
 def extract_functions(file_path):
@@ -44,9 +44,8 @@ def extract_functions(file_path):
                 function_body = source_code[function_start_line]
 
             if flag_contain_code:
-                # function_name@ 表示 有重复
-                if function_name in function_names:
-                    function_name += "@"
+                function_name += "@" * names_count(function_names, function_name)
+                
                 function_names.append(function_name)
                 function_bodies[function_name] = {"function_name": function_name, "function_body": function_body.encode()}
             

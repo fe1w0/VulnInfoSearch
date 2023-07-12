@@ -1,7 +1,7 @@
 # take from Tian Xiao
 import javalang.tree
 import javalang.ast
-
+from handle_file_factory.utils_tree_sitter import names_count
 
 def extract_functions(java_file):
     with open(java_file, "r", errors='ignore')as file:
@@ -32,8 +32,7 @@ def extract_functions(java_file):
                 
                 start_line, start_column = child.position
                 function_name = child.name
-                if function_name in function_names:
-                    function_name += "@"
+                function_name += "@" * names_count(function_names, function_name)
                 function_names.append(function_name)
                 # print(child.modifiers, function_name)
                 tmp_function_names.append(function_name)

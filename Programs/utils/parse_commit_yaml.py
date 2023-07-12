@@ -6,8 +6,10 @@ import traceback
 
 from handle_file_factory.parse_c_file import extract_functions as extract_functions_c
 from handle_file_factory.parse_cpp_file import extract_functions as extract_functions_cpp
+from handle_file_factory.parse_cpp_file import change_cpp_method_modifier_for_joern
 from handle_file_factory.parse_java_file import extract_functions as extract_functions_java
 from handle_file_factory.parse_python_file import extract_functions as extract_functions_python
+
 
 TOTAL_TIMER = 0
 ERROR_TIMER = 0
@@ -42,7 +44,7 @@ def parse_commit_yaml():
                         handle_different_code_from_commits(defective_commit_file_path, patch_commit_file_path, program_language, cve_id, cwe_id)
 
 def handle_function_body_java(class_declaration, fields, function_body):
-    """处理java的函数体
+    """处理java的函数体, 将 class_declaration 与 function_body 进行合并
 
     _extended_summary_
 
@@ -119,14 +121,20 @@ def write_function_body(function_bodies_set, cwe_id, cve_id, program_language, t
         for function_item in function_bodies_set:
             function_name = function_item["function_name"]
             
-            if program_language in ["Java"]:
+            file_path = folder + function_name + lang_extension
+            
+            if program_language in ["C++"]:
+                tmp_function_body_code = function_item["function_body"]["function_body"]
+                function_item["function_body"]["function_body"] = change_cpp_method_modifier_for_joern(tmp_function_body_code, file_path)
+                function_body = function_item["function_body"]["function_body"]                  
+            elif program_language in ["Java"]:
                 tmp_function_body_code = function_item["function_body"]["function_body"]
                 function_item["function_body"]["function_body"] = change_java_method_modifier_for_joern(tmp_function_body_code)
                 function_body = handle_function_body_java(function_item["function_body"]["class_declaration"], function_item["function_body"]["fields"], function_item["function_body"]["function_body"]).encode()
             else:
                 function_body = function_item["function_body"]["function_body"]
 
-            file_path = folder + function_name + lang_extension
+            
             
             with open(file_path, 'wb') as file:
                 file.write(function_body)

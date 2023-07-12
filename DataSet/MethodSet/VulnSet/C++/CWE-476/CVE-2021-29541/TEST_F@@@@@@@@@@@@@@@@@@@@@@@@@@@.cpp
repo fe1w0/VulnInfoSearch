@@ -1,0 +1,8 @@
+TEST_F(NgramKernelTest, ShapeFn) {
+  ShapeInferenceTestOp op("StringNGrams");
+  INFER_OK(op, "?;?", "[?];[?]");
+  INFER_OK(op, "[1];?", "[?];[?]");
+  INFER_OK(op, "[1];[2]", "[?];in1");
+  INFER_ERROR("Shape must be rank 1 but is rank 0", op, "[];?");
+  INFER_ERROR("Shape must be rank 1 but is rank 0", op, "?;[]");
+}

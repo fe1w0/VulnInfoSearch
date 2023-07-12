@@ -1,8 +1,46 @@
-from handle_file_factory.utils_tree_sitter import Parser, CPP_LANGUAGE
-# from utils_tree_sitter import Parser, CPP_LANGUAGE 
+from handle_file_factory.utils_tree_sitter import Parser, CPP_LANGUAGE, names_count
+# from utils_tree_sitter import Parser, CPP_LANGUAGE, names_count
 
 VALID_DECLARATOR = ["function_declarator"]
 VALID_FUNCTION_NAME = ["function_declarator", "pointer_declarator", "qualified_identifier", "field_identifier", "identifier", "reference_declarator", "operator_cast"]
+
+def change_cpp_method_modifier_for_joern(function_body_code, file_path):
+    try:
+        parser = Parser()
+        parser.set_language(CPP_LANGUAGE)
+        
+        tree = parser.parse(function_body_code)
+        root_node = tree.root_node
+        
+        function_node = root_node.children[0]
+        
+        need_replaced_words = []
+        
+        for node in function_node.children:
+            if node.type in VALID_FUNCTION_NAME:
+                for children_node in node.children:
+                    if children_node.type == 'virtual_specifier':
+                        need_replaced_words.append(children_node.text.decode())
+            elif node.type == 'ERROR':
+                need_replaced_words.append(node.text.decode())
+
+        function_body_code = function_body_code.decode().split("\n")
+        first_line = function_body_code[0]
+        
+        for word in need_replaced_words:
+            first_line = first_line.replace(word, "")
+        
+        function_body_code[0] = first_line
+        
+        function_body_code = "\n".join(function_body_code)
+        
+        if need_replaced_words:
+            print(need_replaced_words, file_path)
+
+        return function_body_code.encode()
+                
+    except Exception as e:
+        print(f"[!] Error in change_cpp_method_modifier_for_joern, {e}")
 
 def get_function_name_from_function_definition(function_node):
     """从 node(function_definition)中，获得 function_name
@@ -35,9 +73,9 @@ def get_function_name_and_body_from_function_node(function_node, source_code, fu
     else:
         function_body = source_code[function_start_line]
 
-    # function_name@ 表示 有重复
-    if function_name in function_names:
-        function_name += "@"
+
+    function_name += "@" * names_count(function_names, function_name)
+    
     function_names.append(function_name)
     
     function_bodies[function_name] = {"function_name": function_name, "function_body": function_body.encode()}
@@ -97,8 +135,21 @@ def test():
     # TEST
     test_file = "DataSet/CommitsCollection/C++/yhirose_cpp-peglib/14305f9f53cde207568f21675a1b9294a3ab28b4/test_test1.cc"
     
+    test_file = "DataSet/CommitsCollection/C++/tensorflow_tensorflow/c847822581c08f71efc7c97ce3c8abf5955aae68/tensorflow_core_ops_tpu_cross_replica_ops.cc"
+
+    test_file = "DataSet/CommitsCollection/C++/tensorflow_tensorflow/ae1581faa8d7f24d7974c4021394bc559ed6110b/tensorflow_core_kernels_segment_reduction_ops_impl.h"
+
+    # test_file = "/Users/fe1w0/Project/Python/VulnInfoSearch/DataSet/CommitsCollection/C/LibRaw_LibRaw/1334647862b0c90b2e8cb2f668e66627d9517b17/dcraw_dcraw.c"
+
     function_bodies, function_names = extract_functions(test_file)
     
-    print(function_bodies, function_names)
+    # print(function_bodies, function_names)
+
+    # result = change_cpp_method_modifier_for_joern(function_bodies['quicktake_100_load_raw']['function_body'])
+
+    
+    result = change_cpp_method_modifier_for_joern(function_bodies['Compute']['function_body'])
+    
+    print(result)
     
 # test()

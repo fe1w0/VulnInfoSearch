@@ -20,3 +20,12 @@ C_LANGUAGE = Language(BUILD_LIBRARY, 'c')
 CPP_LANGUAGE = Language(BUILD_LIBRARY, 'cpp')
 JAVA_LANGUAGE = Language(BUILD_LIBRARY, 'java')
 PY_LANGUAGE = Language(BUILD_LIBRARY, 'python')
+
+def names_count(names, function_name):
+    # name 为原始name
+    count  = 0
+    for name in names:
+        name = name.replace("@", "")
+        if function_name == name:
+            count += 1
+    return count
