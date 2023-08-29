@@ -1,35 +1,10 @@
 # VulnInfoSearch
 
-- [ ] VulnInfoSearch
-	- [ ] 函数名  
-		- [ ] Joern: 完整的函数体
-	- [ ] 原始 commit - file 对应
-	- [ ] CPP/C 分类问题
-		- [ ] Github 查询语句解决
-- ENV:
-		- clang
-		- javalang
+VulnInfoSearch项目介绍:
 
-## Todo-List
-- [ ] Download commit files
-	- https://github.com/{owner}/{repo}/blob/{commit-hashcode}/{file_path_and_file_name}
-	- https://github.com/krb5/krb5/blob/ea92d2f0fcceb54a70910fa32e9a0d7a5afc3583/src/lib/krb5/krb/pac.c
-	- likes:
-		-	commit:	https://github.com/krb5/krb5/commit/ea92d2f0fcceb54a70910fa32e9a0d7a5afc3583
-		-   parent:	https://github.com/krb5/krb5/commit/fa62bd33a0c0889c083999c0289ffa81a5d51e7b
-		- commit_file:
-			- commit: https://github.com/krb5/krb5/blob/ea92d2f0fcceb54a70910fa32e9a0d7a5afc3583/src/lib/krb5/krb/pac.c
-			- parent: https://github.com/krb5/krb5/blob/fa62bd33a0c0889c083999c0289ffa81a5d51e7b/src/lib/krb5/krb/pac.c
-- [ ] Test TianXiao's Programs
-- [ ] Get the whole Code. 
+根据CEW编号查找CVE漏洞及其GitHub上的pacth commit,同时含有函数切片功能（支持 C++、C、Python、Java），以快速生成程序漏洞数据集（NoVuln/Vuln），同类型项目及其数据集见 [VulnInfoCrytpo](https://github.com/fe1w0/VulnInfoCrytpo)。
 
+具体数据集见DataSet。
 
-# 设计思路
-
-目前的需求如下(按照需求和优先级排序):
-- 测试师姐的脚本
-- 能否通过正则匹配的方式，去匹配函数体
-- 需要下载这些文件
-
-- 文件分类
-	- 
+大致数据:
+<img width="1679" alt="image" src="https://github.com/fe1w0/VulnInfoSearch/assets/50180586/fb62e1c7-bc81-4b02-a96d-1ac4b3ee6167">
